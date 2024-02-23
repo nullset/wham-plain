@@ -1,16 +1,21 @@
 export const defaultStyle = `
+:root {
+  --background: rgb(0, 115, 207);
+  --shadow: rgba(0, 0, 0, 0.3);
+}
 #favicon {
+  line-height: 0;
   display: flex;
   height: 100%;
   width: 100%;
   justify-content: center;
   align-items: center;
   border-radius: 10%;
-  background: rgba(0, 115, 207, 0.5);
+  background: var(--background);
 }
 #emoji {
   font-size: 280px;
-  text-shadow: 0 0 3dvh black;  
+  text-shadow: 0 0 10px var(--shadow);  
 }
 `;
 
