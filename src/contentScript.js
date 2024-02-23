@@ -1,5 +1,3 @@
-console.log("contentScript.js loaded!");
-
 function changeFavicon(link) {
   let $favicon =
     document.querySelector('link[rel="icon"]') ||
@@ -11,33 +9,29 @@ function changeFavicon(link) {
 
 async function matchUrl() {
   const href = location.href;
-
-  let { items } = await chrome.storage.local.get("items");
+  const { items } = await chrome.storage.local.get("items");
 
   if (!items) return;
 
-  Object.values(items).forEach((item) => {
-    const url = item.url;
-    const urlIsRegex = Boolean(Number(item.urlIsRegex));
-    debugger;
+  let matchSpecificity = 0;
+  let icon;
 
-    if (urlIsRegex) {
-      const regex = new RegExp(url);
-      if (regex.test(href)) {
-        changeFavicon(item.icon);
-      }
-    } else {
-      if (href.startsWith(url)) {
-        changeFavicon(item.icon);
-      }
-    }
+  Object.values(items).forEach((item) => {
+    const regex = new RegExp(item.url);
+    const match = href.match(regex);
+    if (!match) return;
+
+    // Specificity is the length of the matched string. This is a simple way to determine which match is the most specific,
+    // and hence which favicon to use.
+    const specificity = match[0].length;
+
+    if (specificity < matchSpecificity) return;
+
+    matchSpecificity = specificity;
+    icon = item.icon;
   });
+
+  if (icon) changeFavicon(icon);
 }
 
 matchUrl();
-
-// chrome.runtime.sendMessage("get-user-data", (response) => {
-//   debugger;
-//   // 3. Got an asynchronous response with the data from the service worker
-//   console.log("received user data", response);
-// });
