@@ -1,7 +1,5 @@
 <script lang="ts">
-  // import Items from './Items.svelte';
+  import Items from './Items.svelte';
 </script>
 
-<!-- <Items /> -->
-
-FOO
+<Items />
