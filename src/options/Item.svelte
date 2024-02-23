@@ -2,6 +2,8 @@
   import 'emoji-picker-element';
   import { defaultStyle, generateFavicon } from '../lib/templates';
 
+  import {items} from '../store';
+
   // TODO: Replace this with a call to storage
   // export let item = {key: 'new', url: 'https://big.aha.io', iconCSS: '', iconHTML: '', siteCSS: '', siteJS: '', hue: 0, urlIsRegex: false}; 
   // export let item;
@@ -39,13 +41,11 @@
     const formProps = Object.fromEntries(formData);
     console.log({formData, formProps});
     
-    let {items} = await chrome.storage.local.get('items');
-    items ||= {};
-    items[formProps.key] = formProps;
-    await chrome.storage.local.set({items});
     originalEmoji = formProps.emoji;
     originalHue = formProps.hue;
-    window.dispatchEvent(new CustomEvent('fetchItems'));
+
+    
+    window.dispatchEvent(new CustomEvent('setItem', {detail: formProps}));
   }
 
   function resetToDefault() {
