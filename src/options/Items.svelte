@@ -4,7 +4,7 @@
 
 
   async function addNewItem() {
-    const key = `${Date.now()}-${crypto.randomUUID()}`;
+    const key = `${Date.now()}`;
     $items[key] = {key};
   }
 

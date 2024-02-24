@@ -17,21 +17,22 @@
   export let iconCSS: string = defaultStyle;
   export let emoji: string = '❔';
   export let iconHTML: string = '';
-  export let siteCSS: string = '';
-  export let siteJS: string = '';
+  export let customCSS: string = '';
+  export let customJS: string = '';
   export let hue: number = 0;
   export let urlIsRegex: boolean = false;
   export let open: boolean = false;
+  export let uuid: string = crypto.randomUUID();
 
   let originalEmoji = emoji;
   let originalHue = hue;
 
-  $: icon = generateFavicon({size: 16, styles: iconCSS, html: emoji, hue});
-  $: icon24 = generateFavicon({size: 24, styles: iconCSS, html: emoji, hue}); 
-  $: icon128 = generateFavicon({size: 128, styles: iconCSS, html: emoji, hue});
+  $: icon = generateFavicon({size: 16, styles: iconCSS, html: emoji, hue, uuid});
+  $: icon24 = generateFavicon({size: 24, styles: iconCSS, html: emoji, hue, uuid}); 
+  $: icon128 = generateFavicon({size: 128, styles: iconCSS, html: emoji, hue, uuid});
   $: base64Icon = icon && `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(icon)))}`;
 
-  $: originalIcon24 = generateFavicon({size: 24, styles: iconCSS, html: originalEmoji, hue: originalHue}); 
+  $: originalIcon24 = generateFavicon({size: 24, styles: iconCSS, html: originalEmoji, hue: originalHue, uuid}); 
 
   let textareaElem: HTMLTextAreaElement;
 
@@ -48,24 +49,8 @@
     window.dispatchEvent(new CustomEvent('setItem', {detail: formProps}));
   }
 
-  function resetToDefault() {
-    textareaElem.value = defaultIcon;
-  }
-
-  function updateIconHTML(e) {
-    iconHTML = e.target.value;
-  }
-
   function updateIconCSS(e) {
     iconCSS = e.target.value;
-  }
-
-  function undateSiteCSS(e) {
-    siteCSS = e.target.value;
-  }
-
-  function updateSiteJS(e) {
-    siteJS = e.target.value;
   }
 
   window.addEventListener('emoji-click', event => {
@@ -178,17 +163,17 @@
     
           <dl>
             <dt>
-              <label for="{key}-siteCSS">Custom CSS</label>
+              <label for="{key}-customCSS">Custom CSS</label>
             </dt>
             <dd>
-              <textarea name="siteCSS" id="{key}-siteCSS">{siteCSS?.trim()}</textarea>
+              <textarea name="customCSS" id="{key}-customCSS">{customCSS?.trim()}</textarea>
             </dd>
     
             <dt>
-              <label for="{key}-siteJS">Custom JS</label>
+              <label for="{key}-customJS">Custom JS</label>
             </dt>
             <dd>
-              <textarea name="siteJS" id="{key}-siteJS">{siteJS?.trim()}</textarea>
+              <textarea name="customJS" id="{key}-customJS">{customJS?.trim()}</textarea>
             </dd>
           </dl>
           

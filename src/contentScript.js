@@ -7,6 +7,18 @@ function changeFavicon(link) {
   document.head.appendChild($favicon);
 }
 
+function applyCustomCSS(css) {
+  const $style = document.createElement("style");
+  $style.textContent = css;
+  document.head.appendChild($style);
+}
+
+function applyCustomJS(js) {
+  const $script = document.createElement("script");
+  $script.textContent = `(function() {${js}})()`;
+  document.body.appendChild($script);
+}
+
 async function matchUrl() {
   const href = location.href;
   const { items } = await chrome.storage.local.get("items");
@@ -14,7 +26,10 @@ async function matchUrl() {
   if (!items) return;
 
   let matchSpecificity = 0;
+  let matchKey = 0;
   let icon;
+  let customCSS;
+  let customJS;
 
   Object.values(items).forEach((item) => {
     const regex = new RegExp(item.url);
@@ -26,12 +41,18 @@ async function matchUrl() {
     const specificity = match[0].length;
 
     if (specificity < matchSpecificity) return;
+    if (item.key < matchKey) return;
 
     matchSpecificity = specificity;
+    matchKey = item.key;
     icon = item.icon;
+    customCSS = item.customCSS;
+    customJS = item.customJS;
   });
 
   if (icon) changeFavicon(icon);
+  if (customCSS) applyCustomCSS(customCSS);
+  if (customJS) applyCustomJS(customJS);
 }
 
 matchUrl();
