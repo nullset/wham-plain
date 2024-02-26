@@ -17,7 +17,6 @@
 
 <button type="button" on:click={addNewItem}>Add new</button>
 
-{console.log($items)}
 <style scoped>
 
 

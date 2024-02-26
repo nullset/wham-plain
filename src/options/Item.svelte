@@ -2,15 +2,6 @@
   import 'emoji-picker-element';
   import { defaultStyle, generateFavicon } from '../lib/templates';
 
-  import {items} from '../store';
-
-  // TODO: Replace this with a call to storage
-  // export let item = {key: 'new', url: 'https://big.aha.io', iconCSS: '', iconHTML: '', siteCSS: '', siteJS: '', hue: 0, urlIsRegex: false}; 
-  // export let item;
-  // item ||= {key: crypto.randomUUID(), url: 'https://big.aha.io', iconCSS: '', iconHTML: '', siteCSS: '', siteJS: '', hue: 0, urlIsRegex: 0}; 
-  
-  
-  // let {key, url, iconCSS, emoji, iconHTML, siteCSS, siteJS, hue, urlIsRegex} = item;
 
   export let key: string;
   export let url: string = 'https://big.aha.io';
@@ -20,12 +11,12 @@
   export let customCSS: string = '';
   export let customJS: string = '';
   export let hue: number = 0;
-  export let urlIsRegex: boolean = false;
   export let open: boolean = false;
   export let uuid: string = crypto.randomUUID();
 
   let originalEmoji = emoji;
   let originalHue = hue;
+  let originalUrl = url;
 
   $: icon = generateFavicon({size: 16, styles: iconCSS, html: emoji, hue, uuid});
   $: icon24 = generateFavicon({size: 24, styles: iconCSS, html: emoji, hue, uuid}); 
@@ -44,7 +35,7 @@
     
     originalEmoji = formProps.emoji;
     originalHue = formProps.hue;
-
+    originalUrl = formProps.url;
     
     window.dispatchEvent(new CustomEvent('setItem', {detail: formProps}));
   }
@@ -72,7 +63,7 @@
     <details open={open}>
       <summary style="display: flex; ">
         {@html originalIcon24}
-        {url}
+        {originalUrl}
       </summary>
 
       <div style="margin-left: 30px;">
@@ -81,11 +72,7 @@
             <label for="{key}-url">URL:</label>
           </dt>
           <dd>
-            <input type="url" name="url" id="{key}-url" value={url || ''} />
-            <label>
-              <input type="hidden" name="urlIsRegex" value="0" />
-              <input type="checkbox" name="urlIsRegex" checked={Boolean(Number(urlIsRegex))} value="1" /> Is RegExp
-            </label>
+            <input type="url" name="url" id="{key}-url" value={url || ''} on:input={e => url = e.target.value} style={`font-family: monospace; width: ${url.length + 2}ch;`} />
           </dd>
         </dl>
     

@@ -1,7 +1,4 @@
 export const defaultStyle = `
-foreginContent {
-  all: unset;
-}
 .favicon {
   line-height: 0;
   display: flex;
