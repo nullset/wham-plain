@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "Wham!",
   "version": "2.0.0",
-  "permissions": ["activeTab", "scripting", "storage"],
+  "permissions": ["activeTab", "scripting", "storage", "webNavigation"],
+  "host_permissions": ["<all_urls>"],
   "action": { "default_popup": "src/popup/popup.html" },
   "options_page": "src/options/options.html",
   "background": {

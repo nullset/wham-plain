@@ -8,17 +8,13 @@ items.subscribe((value) => {
 });
 
 window.addEventListener("fetchItems", async () => {
-  debugger;
   // chrome.storage.local.get("items").then((data) => {
   //   debugger;
   // });
   const data = (await chrome.storage.local.get("items")) || {};
-  debugger;
   items.set(data.items);
-  debugger;
 });
 
-debugger;
 window.dispatchEvent(new Event("fetchItems"));
 
 window.addEventListener("deleteItem", async (e) => {
